@@ -1,0 +1,1891 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Prophets - Plataforma de Estudos | Time de Data Science</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --primary-blue: #006DB7;
+            --primary-orange: #FF6B35;
+            --primary-purple: #7B1FA2;
+            --primary-green: #4CAF50;
+            --dark-blue: #003d6b;
+            --light-blue: #4A90E2;
+            --light-orange: #FFB366;
+            --dark-bg: #0a0e27;
+            --darker-bg: #050714;
+            --card-bg: #1a1a2e;
+            --white: #ffffff;
+            --gray-100: #f8f9fa;
+            --gray-800: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255,255,255,0.7);
+            --shadow: 0 10px 30px rgba(0,0,0,0.3);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.4);
+            --border-radius: 15px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Background Effects */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0,109,183,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255,107,53,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 100%, rgba(123,31,162,0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        /* Navigation Menu */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 14, 39, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,109,183,0.4);
+        }
+        
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            border-color: transparent;
+        }
+        
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* Page Container */
+        .page-container {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Home Page Styles */
+        .home-hero {
+            padding: 5rem 2rem;
+            text-align: center;
+            background: radial-gradient(ellipse at center, rgba(0,109,183,0.1) 0%, transparent 70%);
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-orange) 50%, var(--primary-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 3s ease-in-out infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.08);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-blue);
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,109,183,0.3);
+        }
+        
+        .feature-icon svg {
+            width: 40px;
+            height: 40px;
+            color: white;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.75rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,109,183,0.4);
+        }
+        
+        /* Search Page Styles */
+        .search-container {
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .search-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .search-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .search-box-large {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .search-input-large {
+            width: 100%;
+            padding: 1.25rem 3.5rem 1.25rem 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            color: white;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input-large:focus {
+            outline: none;
+            background: rgba(255,255,255,0.08);
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(0,109,183,0.1);
+        }
+        
+        .search-button {
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-button:hover {
+            transform: translateY(-50%) scale(1.05);
+        }
+        
+        .filter-tags {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .filter-tag:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .filter-tag.active {
+            background: var(--primary-blue);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .search-results {
+            margin-top: 3rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        /* Track Page Styles (Data Scientist, Engineer, Manager) */
+        .track-header {
+            padding: 3rem 2rem;
+            background: linear-gradient(180deg, rgba(0,109,183,0.1) 0%, transparent 100%);
+            text-align: center;
+        }
+        
+        .track-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .track-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* Info Section */
+        .info-section {
+            background: rgba(255,255,255,0.03);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            margin: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .info-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+        
+        .info-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+        
+        .info-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .legend-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+        
+        .legend-item:hover {
+            background: rgba(255,255,255,0.06);
+            transform: translateX(5px);
+        }
+        
+        .legend-item.beginner { border-left-color: var(--primary-green); }
+        .legend-item.intermediate { border-left-color: var(--primary-orange); }
+        .legend-item.advanced { border-left-color: var(--primary-purple); }
+        
+        .legend-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+        
+        .legend-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .legend-icon.beginner { background: linear-gradient(135deg, var(--primary-green), #45a049); }
+        .legend-icon.intermediate { background: linear-gradient(135deg, var(--primary-orange), #e55a2b); }
+        .legend-icon.advanced { background: linear-gradient(135deg, var(--primary-purple), #9C27B0); }
+        
+        /* Legend Bar Styles */
+        .legend-bar {
+            background: rgba(255,255,255,0.95);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+        
+        .legend-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .legend-dot.beginner { background: linear-gradient(135deg, #4CAF50, #45a049); }
+        .legend-dot.intermediate { background: linear-gradient(135deg, var(--primary-orange), var(--primary-orange)); }
+        .legend-dot.advanced { background: linear-gradient(135deg, #9C27B0, #7B1FA2); }
+        
+        /* Connection Lines */
+        .connections-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .connection-line {
+            stroke: rgba(255,255,255,0.3);
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 5, 5;
+        }
+        
+        .connection-line.animated {
+            animation: dash 30s linear infinite;
+        }
+        
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -100;
+            }
+        }
+        
+        .connection-dot {
+            fill: var(--primary-orange);
+            filter: drop-shadow(0 0 5px rgba(255,107,53,0.5));
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .legend-content {
+            flex: 1;
+        }
+        
+        .legend-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .legend-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        /* Pipeline Container */
+        .pipeline-wrapper {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: visible;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Level Sections */
+        .level-section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+        
+        .level-section.beginner {
+            background: linear-gradient(135deg, rgba(76,175,80,0.05) 0%, rgba(76,175,80,0.02) 100%);
+            border-color: rgba(76,175,80,0.3);
+        }
+        
+        .level-section.intermediate {
+            background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, rgba(255,107,53,0.02) 100%);
+            border-color: rgba(255,107,53,0.3);
+        }
+        
+        .level-section.advanced {
+            background: linear-gradient(135deg, rgba(156,39,176,0.05) 0%, rgba(156,39,176,0.02) 100%);
+            border-color: rgba(156,39,176,0.3);
+        }
+        
+        .level-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+        
+        .level-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            animation: pulse 2s infinite;
+        }
+        
+        .level-icon svg {
+            width: 35px;
+            height: 35px;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(255,255,255,0); }
+            100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+        }
+        
+        .level-icon.beginner { background: linear-gradient(135deg, var(--primary-green), #45a049); }
+        .level-icon.intermediate { background: linear-gradient(135deg, var(--primary-orange), #e55a2b); }
+        .level-icon.advanced { background: linear-gradient(135deg, var(--primary-purple), #9C27B0); }
+        
+        .level-info {
+            flex: 1;
+        }
+        
+        .level-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .level-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        
+        /* Course Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            position: relative;
+        }
+        
+        .course-node {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+            border-radius: 15px;
+            padding: 1.25rem;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .course-node:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            border-color: var(--primary-orange);
+            background: white;
+        }
+        
+        .node-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .node-number {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .node-title {
+            font-weight: 700;
+            color: var(--gray-800);
+            font-size: 0.95rem;
+            line-height: 1.3;
+            flex: 1;
+        }
+        
+        .node-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray-800);
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+        
+        .node-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .node-link:hover {
+            color: var(--primary-orange);
+            transform: translateX(3px);
+        }
+        
+        .node-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            padding: 0.25rem 0.75rem;
+            background: linear-gradient(135deg, var(--primary-orange), #e55a2b);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 500;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 5rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .level-icon {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .level-icon svg {
+                width: 25px;
+                height: 25px;
+            }
+            
+            .level-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo" onclick="showPage('home')">
+                <div class="logo-icon">TP</div>
+                <div class="logo-text">The Prophets</div>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a class="nav-link active" onclick="showPage('home')">
+                        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        Início
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showPage('search')">
+                        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        Pesquisar Cursos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showPage('data-scientist')">
+                        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        Cientista de Dados
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showPage('data-engineer')">
+                        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                        </svg>
+                        Engenheiro de Dados
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showPage('data-manager')">
+                        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        Gestor de Dados
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Page Container -->
+    <div class="page-container">
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <div class="home-hero">
+                <h1 class="hero-title">BEM VINDO À PLATAFORMA DE ESTUDOS DO TIME DE DATA SCIENCE</h1>
+                <p class="hero-subtitle">
+                    Transforme sua carreira com trilhas especializadas em Data Science, Machine Learning e Inteligência Artificial. 
+                    Acesse conteúdo curado pelos melhores profissionais do mercado e evolua do básico ao avançado com metodologia comprovada.
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card" onclick="showPage('data-scientist')">
+                    <div class="feature-icon">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Cientista de Dados</h3>
+                    <p class="feature-description">
+                        Domine Python, Machine Learning, Deep Learning e estatística avançada. Construa modelos preditivos e tome decisões baseadas em dados.
+                    </p>
+                    <a class="cta-button">Começar Trilha →</a>
+                </div>
+                
+                <div class="feature-card" onclick="showPage('data-engineer')">
+                    <div class="feature-icon">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Engenheiro de Dados</h3>
+                    <p class="feature-description">
+                        Aprenda a construir pipelines de dados, trabalhar com Big Data, Cloud Computing e arquiteturas escaláveis para processamento de dados.
+                    </p>
+                    <a class="cta-button">Começar Trilha →</a>
+                </div>
+                
+                <div class="feature-card" onclick="showPage('data-manager')">
+                    <div class="feature-icon">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Gestor de Cientista de Dados</h3>
+                    <p class="feature-description">
+                        Desenvolva habilidades de liderança, gestão de projetos de dados e estratégias para liderar equipes de Data Science de alta performance.
+                    </p>
+                    <a class="cta-button">Começar Trilha →</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Search Page -->
+        <div id="search" class="page">
+            <div class="search-container">
+                <div class="search-header">
+                    <h2 class="search-title">Pesquisar Cursos</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                        Encontre o curso perfeito para seu desenvolvimento profissional
+                    </p>
+                </div>
+                
+                <div class="search-box-large">
+                    <input type="text" class="search-input-large" placeholder="Digite o nome do curso, tecnologia ou instrutor...">
+                    <button class="search-button">Buscar</button>
+                </div>
+                
+                <div class="filter-tags">
+                    <span class="filter-tag active">Todos</span>
+                    <span class="filter-tag">Python</span>
+                    <span class="filter-tag">Machine Learning</span>
+                    <span class="filter-tag">SQL</span>
+                    <span class="filter-tag">Cloud</span>
+                    <span class="filter-tag">Deep Learning</span>
+                    <span class="filter-tag">Estatística</span>
+                    <span class="filter-tag">APIs</span>
+                </div>
+                
+                <div class="search-results" id="searchResults">
+                    <!-- Results will be dynamically loaded here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Data Scientist Track -->
+        <div id="data-scientist" class="page">
+            <div class="track-header">
+                <h2 class="track-title">Trilha de Cientista de Dados</h2>
+                <p class="track-description">
+                    Desenvolva habilidades completas em análise de dados, machine learning e inteligência artificial para se tornar um cientista de dados de excelência.
+                </p>
+            </div>
+            
+            <div class="legend-bar">
+                <div class="legend-item">
+                    <div class="legend-dot beginner">🎯</div>
+                    <span>Iniciante - Fundamentos</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot intermediate">🚀</div>
+                    <span>Intermediário - Especialização</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot advanced">💎</div>
+                    <span>Avançado - Expertise</span>
+                </div>
+            </div>
+            
+            <div class="pipeline-wrapper">
+                <svg class="connections-canvas" id="connectionsCanvas"></svg>
+                
+                <!-- INICIANTE Section -->
+                <div class="level-section beginner" data-level="beginner">
+                    <div class="level-header">
+                        <div class="level-icon beginner">🎯</div>
+                        <div class="level-info">
+                            <h2 class="level-title">Iniciante</h2>
+                            <p class="level-subtitle">Construa uma base sólida em Data Science com fundamentos essenciais</p>
+                        </div>
+                    </div>
+                    <div class="cards-grid" id="beginnerGrid">
+                        <div class="course-node" data-index="1">
+                            <span class="node-badge">Python</span>
+                            <div class="node-header">
+                                <span class="node-number">1</span>
+                                <h3 class="node-title">Introdução ao Python</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=OeKzVjiiRm4&list=PLvlkVRRKOYFSpRkqnR0p2A-eaVlpLnN3D&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="2">
+                            <span class="node-badge">Dados</span>
+                            <div class="node-header">
+                                <span class="node-number">2</span>
+                                <h3 class="node-title">Pandas</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=9Cw7iIjFlBc&list=PLvlkVRRKOYFQHnDhjTmXLEz3HU5WTgOcF" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="3">
+                            <span class="node-badge">Stats</span>
+                            <div class="node-header">
+                                <span class="node-number">3</span>
+                                <h3 class="node-title">Estatística Básica</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=4CcgZXXIl7o&list=PLvlkVRRKOYFQGIZdz7BycJet9OncyXlbq&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="4">
+                            <span class="node-badge">SQL</span>
+                            <div class="node-header">
+                                <span class="node-number">4</span>
+                                <h3 class="node-title">SQL</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=VmkJG8awKqM&list=PLvlkVRRKOYFRo651oD0JptVqfQGDvMi3j&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="5">
+                            <span class="node-badge">ML</span>
+                            <div class="node-header">
+                                <span class="node-number">5.1</span>
+                                <h3 class="node-title">Machine Learning pt.1</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=oz_rZ92Tmls&list=PLvlkVRRKOYFR6_LmNcJliicNan2TYeFO2&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="6">
+                            <span class="node-badge">ML</span>
+                            <div class="node-header">
+                                <span class="node-number">5.2</span>
+                                <h3 class="node-title">Machine Learning pt.2</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=oj0ACpEHpS0&list=PLvlkVRRKOYFTXcpttQSZmv1wDg7F3uH7o&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="7">
+                            <span class="node-badge">DataViz</span>
+                            <div class="node-header">
+                                <span class="node-number">6</span>
+                                <h3 class="node-title">Visualização dos Dados</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> ICMCTV
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=BLIosfH2yM0&list=PLt7qVSwRVn5YEIvaMb02IJVKCpauWV-s9&ab_channel=ICMCTV" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="8">
+                            <span class="node-badge">Web</span>
+                            <div class="node-header">
+                                <span class="node-number">7</span>
+                                <h3 class="node-title">Streamlit</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=JLcEWe7woVk&list=PLvlkVRRKOYFRYA40hJ_V8e_iC5Lu6YPyn&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="9">
+                            <span class="node-badge">Git</span>
+                            <div class="node-header">
+                                <span class="node-number">8</span>
+                                <h3 class="node-title">Git & Github</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=84FhNXNWoig&list=PLvlkVRRKOYFQyKmdrassLNxkzSMM6tcSL&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="10">
+                            <span class="node-badge">Agile</span>
+                            <div class="node-header">
+                                <span class="node-number">9</span>
+                                <h3 class="node-title">Metodologia Ágil</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> D1UP Academy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=-2W_loW_QYw&list=PLoGDMdX4pUAfso0bQWSZFgjEBlr2H9IBU&index=1&ab_channel=D1UPAcademy%7CEduardoCassago" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- INTERMEDIÁRIO Section -->
+                <div class="level-section intermediate" data-level="intermediate">
+                    <div class="level-header">
+                        <div class="level-icon intermediate">🚀</div>
+                        <div class="level-info">
+                            <h2 class="level-title">Intermediário</h2>
+                            <p class="level-subtitle">Aprofunde seus conhecimentos com técnicas avançadas e especialização</p>
+                        </div>
+                    </div>
+                    <div class="cards-grid" id="intermediateGrid">
+                        <div class="course-node" data-index="1">
+                            <span class="node-badge">MLOps</span>
+                            <div class="node-header">
+                                <span class="node-number">1</span>
+                                <h3 class="node-title">MLFlow</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=W8bxk42C9UE&list=PLvlkVRRKOYFQeQEA5Lc0US9i-EK8eGgrs&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="2">
+                            <span class="node-badge">Stats</span>
+                            <div class="node-header">
+                                <span class="node-number">2a</span>
+                                <h3 class="node-title">Panorama da Estatística</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> A Ciência da Estatística
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=wAYB75xEdZQ&list=PL5Dg8nFln2eXGSjEct01QinGi4rrNthQG&ab_channel=ACi%C3%AAnciadaEstat%C3%ADstica" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="3">
+                            <span class="node-badge">Stats</span>
+                            <div class="node-header">
+                                <span class="node-number">2b</span>
+                                <h3 class="node-title">Tipos de Dados</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> A Ciência da Estatística
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=hESKcJbMCrI&list=PL5Dg8nFln2eU1g1wzazCDF6jusmWE2nIL&ab_channel=ACi%C3%AAnciadaEstat%C3%ADstica" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="4">
+                            <span class="node-badge">Stats</span>
+                            <div class="node-header">
+                                <span class="node-number">2c</span>
+                                <h3 class="node-title">Probabilidade</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> A Ciência da Estatística
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=f-tC2LPhhQ4&list=PL5Dg8nFln2eW2L253yt8a_A3O82x5f7iw&ab_channel=ACi%C3%AAnciadaEstat%C3%ADstica" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="5">
+                            <span class="node-badge">Cloud</span>
+                            <div class="node-header">
+                                <span class="node-number">3</span>
+                                <h3 class="node-title">AWS S3</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=Al-l6EC2L4s&list=PLvlkVRRKOYFSSs2G3a3b5AseLdGgO-i0G&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="6">
+                            <span class="node-badge">Cloud</span>
+                            <div class="node-header">
+                                <span class="node-number">4</span>
+                                <h3 class="node-title">AWS EC2</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=13bWkCYjL1A&list=PLvlkVRRKOYFToiB2iFk23Gukm-aJ2A-pL&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="7">
+                            <span class="node-badge">Cloud</span>
+                            <div class="node-header">
+                                <span class="node-number">5</span>
+                                <h3 class="node-title">Docker</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=vJ2lT4dMM88&list=PLvlkVRRKOYFQ46gO1yB-S-n-t7Ie5-9v-&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="8">
+                            <span class="node-badge">Web</span>
+                            <div class="node-header">
+                                <span class="node-number">6</span>
+                                <h3 class="node-title">APIs (FastAPI)</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>⚡</span> Hashtag Programação
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=Eih-eCCDHW0&list=PLpdAy0tYrnKy3TvpCT-x7kGqMQ5grk1Xq&index=2&ab_channel=HashtagPrograma%C3%A7%C3%A3o" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- AVANÇADO Section -->
+                <div class="level-section advanced" data-level="advanced">
+                    <div class="level-header">
+                        <div class="level-icon advanced">💎</div>
+                        <div class="level-info">
+                            <h2 class="level-title">Avançado</h2>
+                            <p class="level-subtitle">Domine técnicas de ponta e liderança em produtos de dados</p>
+                        </div>
+                    </div>
+                    <div class="cards-grid" id="advancedGrid">
+                        <div class="course-node" data-index="1">
+                            <span class="node-badge">Stats</span>
+                            <div class="node-header">
+                                <span class="node-number">1a</span>
+                                <h3 class="node-title">Inferência Estatística</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> A Ciência da Estatística
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=Yp_l23A1YvE&list=PL5Dg8nFln2eX-3Y4qJ-4p2d2-Xp-B-b-w&ab_channel=ACi%C3%AAnciadaEstat%C3%ADstica" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="2">
+                            <span class="node-badge">Stats</span>
+                            <div class="node-header">
+                                <span class="node-number">1b</span>
+                                <h3 class="node-title">Regressão</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> A Ciência da Estatística
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=d3gYECZ8G5E&list=PL5Dg8nFln2eU-1H-w2i_esd2p6-t3o-tN&ab_channel=ACi%C3%AAnciadaEstat%C3%ADstica" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="3">
+                            <span class="node-badge">Stats</span>
+                            <div class="node-header">
+                                <span class="node-number">1c</span>
+                                <h3 class="node-title">Séries Temporais</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=j4Z25_n-d2Q&list=PLvlkVRRKOYFTS4jK0ja8v8lxi4Y-qH2k9&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="4">
+                            <span class="node-badge">Product</span>
+                            <div class="node-header">
+                                <span class="node-number">2</span>
+                                <h3 class="node-title">Product Management</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> PM3
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=k2w_f0f5yPA&list=PLy9pcyw2yyg7JidC4I-w_Yh25-tqLgWJp&ab_channel=PM3-CursosdeProductManagement" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="5">
+                            <span class="node-badge">Product</span>
+                            <div class="node-header">
+                                <span class="node-number">3</span>
+                                <h3 class="node-title">Métricas de Produto</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> PM3
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=o0p9N4aGg5A&list=PLy9pcyw2yyg44a0C3x-3_3Iu5yAjgS-33&ab_channel=PM3-CursosdeProductManagement" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                        
+                        <div class="course-node" data-index="6">
+                            <span class="node-badge">Product</span>
+                            <div class="node-header">
+                                <span class="node-number">4</span>
+                                <h3 class="node-title">Priorização</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> PM3
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=o0p9N4aGg5A&list=PLy9pcyw2yyg44a0C3x-3_3Iu5yAjgS-33&ab_channel=PM3-CursosdeProductManagement" target="_blank" class="node-link">
+                                Acessar →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Data Engineer Track -->
+        <div id="data-engineer" class="page">
+            <div class="track-header">
+                <h2 class="track-title">Trilha de Engenheiro de Dados</h2>
+                <p class="track-description">
+                    Desenvolva habilidades completas em análise de dados, machine learning e inteligência artificial para se tornar um cientista de dados de excelência.
+                </p>
+            </div>
+            <div class="legend-bar">
+                <div class="legend-item">
+                    <div class="legend-dot beginner">🎯</div>
+                    <span>Iniciante - Fundamentos</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot intermediate">🚀</div>
+                    <span>Intermediário - Especialização</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot advanced">💎</div>
+                    <span>Avançado - Expertise</span>
+                </div>
+            </div>
+
+            <div class="pipeline-wrapper">
+                <svg class="connections-canvas" id="connectionsCanvasDE"></svg>
+
+                <!-- INICIANTE Section -->
+                <div class="level-section beginner" data-level="beginner">
+                    <div class="level-header">
+                        <div class="level-icon beginner">🎯</div>
+                        <div class="level-info">
+                            <h2 class="level-title">Iniciante</h2>
+                            <p class="level-subtitle">Construa uma base sólida em Engenharia de Dados com fundamentos essenciais</p>
+                        </div>
+                    </div>
+                    <div class="cards-grid" id="beginnerGridDE">
+                        <div class="course-node" data-index="1">
+                            <span class="node-badge">Python</span>
+                            <div class="node-header">
+                                <span class="node-number">1</span>
+                                <h3 class="node-title">Introdução ao Python</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=OeKzVjiiRm4&list=PLvlkVRRKOYFSpRkqnR0p2A-eaVlpLnN3D&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="2">
+                            <span class="node-badge">Dados</span>
+                            <div class="node-header">
+                                <span class="node-number">2</span>
+                                <h3 class="node-title">Pandas</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=9Cw7iIjFlBc&list=PLvlkVRRKOYFQHnDhjTmXLEz3HU5WTgOcF" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="3">
+                            <span class="node-badge">SQL</span>
+                            <div class="node-header">
+                                <span class="node-number">3</span>
+                                <h3 class="node-title">SQL</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=VmkJG8awKqM&list=PLvlkVRRKOYFRo651oD0JptVqfQGDvMi3j&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="4">
+                            <span class="node-badge">Web</span>
+                            <div class="node-header">
+                                <span class="node-number">4</span>
+                                <h3 class="node-title">Streamlit</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=JLcEWe7woVk&list=PLvlkVRRKOYFRYA40hJ_V8e_iC5Lu6YPyn&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="5">
+                            <span class="node-badge">Git</span>
+                            <div class="node-header">
+                                <span class="node-number">5</span>
+                                <h3 class="node-title">Git & Github</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=84FhNXNWoig&list=PLvlkVRRKOYFQyKmdrassLNxkzSMM6tcSL&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="6">
+                            <span class="node-badge">Web</span>
+                            <div class="node-header">
+                                <span class="node-number">6</span>
+                                <h3 class="node-title">APIs (FastAPI)</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>⚡</span> Hashtag Programação
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=Eih-eCCDHW0&list=PLpdAy0tYrnKy3TvpCT-x7kGqMQ5grk1Xq&index=2&ab_channel=HashtagPrograma%C3%A7%C3%A3o" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="7">
+                            <span class="node-badge">MLOps</span>
+                            <div class="node-header">
+                                <span class="node-number">7</span>
+                                <h3 class="node-title">MLFlow</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=W8bxk42C9UE&list=PLvlkVRRKOYFQeQEA5Lc0US9i-EK8eGgrs&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="8">
+                            <span class="node-badge">Agile</span>
+                            <div class="node-header">
+                                <span class="node-number">8</span>
+                                <h3 class="node-title">Metodologia Ágil</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> D1UP Academy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=-2W_loW_QYw&list=PLoGDMdX4pUAfso0bQWSZFgjEBlr2H9IBU&index=1&ab_channel=D1UPAcademy%7CEduardoCassago" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INTERMEDIÁRIO Section -->
+                <div class="level-section intermediate" data-level="intermediate">
+                    <div class="level-header">
+                        <div class="level-icon intermediate">🚀</div>
+                        <div class="level-info">
+                            <h2 class="level-title">Intermediário</h2>
+                            <p class="level-subtitle">Aprofunde seus conhecimentos com técnicas avançadas e especialização</p>
+                        </div>
+                    </div>
+                    <div class="cards-grid" id="intermediateGridDE">
+                        <div class="course-node" data-index="9">
+                            <span class="node-badge">Cloud</span>
+                            <div class="node-header">
+                                <span class="node-number">1</span>
+                                <h3 class="node-title">Cloud</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> Oracle Database Product Management
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=ptEmLAoBET8&list=PLdtXkK5KBY57_y3Z0SW2cbCqGUPbfc94w&ab_channel=OracleDatabaseProductManagement" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="10">
+                            <span class="node-badge">Product</span>
+                            <div class="node-header">
+                                <span class="node-number">2a</span>
+                                <h3 class="node-title">Product Management</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> Diogo Becker
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=kJwvGhO6BhQ&list=PLXSOhWZ2OouWAyu2nuxz3VP5RZPx3q8uD&ab_channel=DiogoBecker-ProductManagement" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="11">
+                            <span class="node-badge">Product</span>
+                            <div class="node-header">
+                                <span class="node-number">2b</span>
+                                <h3 class="node-title">Métricas</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> Diogo Becker
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=7cdVqvwArkU&list=PLXSOhWZ2OouWrjuTz-6zrsMRU6wKTC5X2&ab_channel=DiogoBecker-ProductManagement" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="12">
+                            <span class="node-badge">Product</span>
+                            <div class="node-header">
+                                <span class="node-number">2c</span>
+                                <h3 class="node-title">Priorização</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> Diogo Becker
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=FN0M1EqdTtY&list=PLXSOhWZ2OouVIQSX1Xxt_nD85FkngBu7m&ab_channel=DiogoBecker-ProductManagement" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="13">
+                            <span class="node-badge">Stats</span>
+                            <div class="node-header">
+                                <span class="node-number">3</span>
+                                <h3 class="node-title">Estatística Básica</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=4CcgZXXIl7o&list=PLvlkVRRKOYFQGIZdz7BycJet9OncyXlbq&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="14">
+                            <span class="node-badge">ML</span>
+                            <div class="node-header">
+                                <span class="node-number">4.1</span>
+                                <h3 class="node-title">Machine Learning pt.1</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=oz_rZ92Tmls&list=PLvlkVRRKOYFR6_LmNcJliicNan2TYeFO2&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="15">
+                            <span class="node-badge">ML</span>
+                            <div class="node-header">
+                                <span class="node-number">4.2</span>
+                                <h3 class="node-title">Machine Learning pt.2</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> TéoMeWhy
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=oj0ACpEHpS0&list=PLvlkVRRKOYFTXcpttQSZmv1wDg7F3uH7o&ab_channel=T%C3%A9oMeWhy" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="16">
+                            <span class="node-badge">DataViz</span>
+                            <div class="node-header">
+                                <span class="node-number">5</span>
+                                <h3 class="node-title">Visualização dos Dados</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> ICMCTV
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=BLIosfH2yM0&list=PLt7qVSwRVn5YEIvaMb02IJVKCpauWV-s9&ab_channel=ICMCTV" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AVANÇADO Section -->
+                <div class="level-section advanced" data-level="advanced">
+                    <div class="level-header">
+                        <div class="level-icon advanced">💎</div>
+                        <div class="level-info">
+                            <h2 class="level-title">Avançado</h2>
+                            <p class="level-subtitle">Domine técnicas de ponta e liderança em produtos de dados</p>
+                        </div>
+                    </div>
+                    <div class="cards-grid" id="advancedGridDE">
+                        <div class="course-node" data-index="17">
+                            <span class="node-badge">Stats</span>
+                            <div class="node-header">
+                                <span class="node-number">1a</span>
+                                <h3 class="node-title">Panorama da Estatística</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> A Ciência da Estatística
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=wAYB75xEdZQ&list=PL5Dg8nFln2eXGSjEct01QinGi4rrNthQG&ab_channel=ACi%C3%AAnciadaEstat%C3%ADstica" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="18">
+                            <span class="node-badge">Stats</span>
+                            <div class="node-header">
+                                <span class="node-number">1b</span>
+                                <h3 class="node-title">Tipos de Dados</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> A Ciência da Estatística
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=hESKcJbMCrI&list=PL5Dg8nFln2eU1g1wzazCDF6jusmWE2nIL&ab_channel=ACi%C3%AAnciadaEstat%C3%ADstica" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="19">
+                            <span class="node-badge">Stats</span>
+                            <div class="node-header">
+                                <span class="node-number">1c</span>
+                                <h3 class="node-title">Probabilidade</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> A Ciência da Estatística
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=vzzG3oaZtOA&list=PL5Dg8nFln2eWlB9DLi9drLtPcm5UANcUI&ab_channel=ACi%C3%AAnciadaEstat%C3%ADstica" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="20">
+                            <span class="node-badge">Stats</span>
+                            <div class="node-header">
+                                <span class="node-number">1d</span>
+                                <h3 class="node-title">Teoria de Conjuntos</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> A Ciência da Estatística
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=S3_3LSJqgVg&list=PL5Dg8nFln2eVou0YbxuUiYWmjPuxTLAYe&ab_channel=ACi%C3%AAnciadaEstat%C3%ADstica" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="21">
+                            <span class="node-badge">Stats</span>
+                            <div class="node-header">
+                                <span class="node-number">1e</span>
+                                <h3 class="node-title">Curiosidades da Estatística</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> A Ciência da Estatística
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=h-7JPboMsEg&list=PL5Dg8nFln2eWximGmZXKaBA_CQ6fK0AWw&ab_channel=ACi%C3%AAnciadaEstat%C3%ADstica" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="22">
+                            <span class="node-badge">Stats</span>
+                            <div class="node-header">
+                                <span class="node-number">1f</span>
+                                <h3 class="node-title">Valor-p</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> A Ciência da Estatística
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=xv79gO5C-SE&list=PL5Dg8nFln2eUTqoWcNSV4AyVEVty_edWS&ab_channel=ACi%C3%AAnciadaEstat%C3%ADstica" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="23">
+                            <span class="node-badge">Stats</span>
+                            <div class="node-header">
+                                <span class="node-number">1g</span>
+                                <h3 class="node-title">Modelo de Regressão</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> A Ciência da Estatística
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=21txO7PN9EE&list=PL5Dg8nFln2eUTqoWcNSV4AyVEVty_edWS&index=3&ab_channel=ACi%C3%AAnciadaEstat%C3%ADstica" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="24">
+                            <span class="node-badge">Stats</span>
+                            <div class="node-header">
+                                <span class="node-number">1h</span>
+                                <h3 class="node-title">Inferência Estatística</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> Cibele Russo
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=JB8Hv8yJsIQ&list=PLt7qVSwRVn5aDu6DW-98cgk7ahkjku1B8&index=2&ab_channel=CibeleRusso" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="25">
+                            <span class="node-badge">TimeSeries</span>
+                            <div class="node-header">
+                                <span class="node-number">2a</span>
+                                <h3 class="node-title">Conceitos Básicos</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> Professor Vinicius Lima
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=rexHHx6Nwec&list=PLubmBFLX1_vgGv4sAUG9O0HUw8NzJqhyD&ab_channel=ProfessorViniciusLima" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="26">
+                            <span class="node-badge">TimeSeries</span>
+                            <div class="node-header">
+                                <span class="node-number">2b</span>
+                                <h3 class="node-title">Modelos de Decomposição</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> Professor Vinicius Lima
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=Ep5x8wZI5v0&list=PLubmBFLX1_vjYSpClZuz0fVY-qkx1tMvC&ab_channel=ProfessorViniciusLima" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="27">
+                            <span class="node-badge">TimeSeries</span>
+                            <div class="node-header">
+                                <span class="node-number">2c</span>
+                                <h3 class="node-title">Suavização Exponencial</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> Professor Vinicius Lima
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=aVm0G0HTetw&list=PLubmBFLX1_vhjQjUG_rXpQ--USd102_ff" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="28">
+                            <span class="node-badge">TimeSeries</span>
+                            <div class="node-header">
+                                <span class="node-number">2d</span>
+                                <h3 class="node-title">Modelos ARIMA</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> Professor Vinicius Lima
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=gJEkECpgsVg&list=PLubmBFLX1_vhN50OkjdmihVzd3kdYKprw&ab_channel=ProfessorViniciusLima" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="29">
+                            <span class="node-badge">DeepLearning</span>
+                            <div class="node-header">
+                                <span class="node-number">3</span>
+                                <h3 class="node-title">Deep Learning</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> Dalcimar Casanova
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=0VD_2t6EdS4&list=PL9At2PVRU0ZqVArhU9QMyI3jSe113_m2-&ab_channel=DalcimarCasanova" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                        <div class="course-node" data-index="30">
+                            <span class="node-badge">LLM</span>
+                            <div class="node-header">
+                                <span class="node-number">4</span>
+                                <h3 class="node-title">LLMs</h3>
+                            </div>
+                            <div class="node-meta">
+                                <span>📹</span> Vizuara
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=Xpr8D6LeAtw&list=PLPTV0NXA_ZSgsLAr8YCgCwhPIJNNtexWu&index=1&ab_channel=Vizuara" target="_blank" class="node-link">Acessar →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        <!-- Data Manager Track -->
+        <div id="data-manager" class="page">
+            <div class="track-header">
+                <h2 class="track-title">Trilha de Gestor de Cientista de Dados</h2>
+                <p class="track-description">
+                    Desenvolva competências de liderança e gestão estratégica para liderar equipes de Data Science e entregar valor através de dados.
+                </p>
+            </div>
+            
+            <div class="info-section">
+                <p style="text-align: center; color: var(--text-secondary); font-size: 1.2rem; padding: 3rem;">
+                    🚧 Conteúdo em desenvolvimento - Em breve disponível! 🚧
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <p>© <span id="currentYear">2025</span> The Prophets - Plataforma de Estudos | Time de Data Science</p>
+    </footer>
+    
+    <script>
+        // Update year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        // Page navigation
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            const selectedPage = document.getElementById(pageId);
+            if (selectedPage) {
+                selectedPage.classList.add('active');
+            }
+            
+            // Update nav links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            // Set active nav link
+            const activeLink = Array.from(navLinks).find(link => {
+                const linkText = link.textContent.trim();
+                if (pageId === 'home' && linkText === 'Início') return true;
+                if (pageId === 'search' && linkText.includes('Pesquisar')) return true;
+                if (pageId === 'data-scientist' && linkText.includes('Cientista')) return true;
+                if (pageId === 'data-engineer' && linkText.includes('Engenheiro')) return true;
+                if (pageId === 'data-manager' && linkText.includes('Gestor')) return true;
+                return false;
+            });
+            
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Search functionality
+        const searchButton = document.querySelector('.search-button');
+        const searchInput = document.querySelector('.search-input-large');
+        const filterTags = document.querySelectorAll('.filter-tag');
+        
+        if (searchButton) {
+            searchButton.addEventListener('click', performSearch);
+        }
+        
+        if (searchInput) {
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+        }
+        
+        filterTags.forEach(tag => {
+            tag.addEventListener('click', function() {
+                filterTags.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                performSearch();
+            });
+        });
+        
+        function performSearch() {
+            const searchTerm = searchInput ? searchInput.value : '';
+            const activeFilter = document.querySelector('.filter-tag.active');
+            const filterText = activeFilter ? activeFilter.textContent : 'Todos';
+            
+            // Simulate search results
+            const resultsContainer = document.getElementById('searchResults');
+            if (resultsContainer) {
+                resultsContainer.innerHTML = `
+                    <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">
+                        Buscando por "${searchTerm}" ${filterText !== 'Todos' ? `em ${filterText}` : ''}...
+                    </p>
+                `;
+                
+                // Simulate loading
+                setTimeout(() => {
+                    resultsContainer.innerHTML = `
+                        <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">
+                            Nenhum resultado encontrado. Tente outros termos de busca.
+                        </p>
+                    `;
+                }, 1000);
+            }
+        }
+        
+        // Initialize
+        showPage('home');
+    </script>
+</body>
+</html>
